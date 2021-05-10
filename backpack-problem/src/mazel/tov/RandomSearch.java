@@ -11,31 +11,26 @@ public class RandomSearch implements Algorithms {
     @Override
     public Solution solve(Backpack backpack, int currWeight, double currVal, List<Integer> itemId) {
 
-        Solution solution= new Solution();
+        Solution solution = new Solution();
 
-        for(int i=0; i<100; i++)
-        {
-            while (currWeight<= backpack.getBackPackSize())
-            {
-                int r=new Random().nextInt(backpack.getItems().size());
-                if(!itemId.contains(backpack.getItems().get(r).getItemID()) && currWeight+ backpack.getItems().get(r).getItemWeight()<= backpack.getBackPackSize())
-                {
+        for (int i = 0; i < 100_000_000; i++) {
+            while (currWeight <= backpack.getBackPackSize()) {
+                int r = new Random().nextInt(backpack.getItems().size());
+                if (!itemId.contains(backpack.getItems().get(r).getItemID()) && currWeight + backpack.getItems().get(r).getItemWeight() <= backpack.getBackPackSize()) {
                     itemId.add(backpack.getItems().get(r).getItemID());
-                    currWeight=currWeight+ backpack.getItems().get(r).getItemWeight();
-                    currVal=currVal+ backpack.getItems().get(r).getItemValue();
-                }
-                else
+                    currWeight = currWeight + backpack.getItems().get(r).getItemWeight();
+                    currVal = currVal + backpack.getItems().get(r).getItemValue();
+                } else
                     break;
             }
-            if(solution.getBestValue()<currVal)
-            {
+            if (solution.getBestValue() < currVal) {
                 solution.setBestValue(currVal);
                 solution.setBestWeight(currWeight);
                 solution.setBestItemID(new ArrayList<>(itemId));
             }
             itemId.clear();
-            currWeight=0;
-            currVal=0;
+            currWeight = 0;
+            currVal = 0;
         }
 
         return solution;
